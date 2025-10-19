@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Treasure Found!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>🎉 Congratulations! 🎉</h1>
+    <p>You completed the treasure hunt!</p>
+    <p>Your Score: {{ score }} / {{ total }}</p>
+
+    <img src="{{ url_for('static', filename='images/treasure.jpeg') }}" alt="Treasure">
+
+    <br><br>
+    <button onclick="window.location.href='/'" class="btn">Play Again</button>
+</body>
+</html>

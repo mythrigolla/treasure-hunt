@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Treasure Hunt Adventure 🏴‍☠️</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Treasure Hunt Adventure 🏴‍☠️</h1>
+
+    <!-- Clouds -->
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+
+    <!-- Stars -->
+    <div id="starContainer"></div>
+
+    <!-- Treasure Path / Progress -->
+    <div class="path-container">
+        <div class="path">
+            <div class="progress-bar" id="progressBar">{{ progress }}%</div>
+        </div>
+        <div id="treasureIcon"></div>
+    </div>
+
+    <!-- Question Box -->
+    <div class="question-scroll animate-scroll" id="questionBox">
+        <h2>Level {{ current_level }} / {{ total }}</h2>
+        <p>{{ question.question_text }}</p>
+
+        <form method="POST">
+            {% for opt in question.options %}
+                <input type="radio" name="option" value="{{ opt }}" required> {{ opt }}<br>
+            {% endfor %}
+            <button type="submit" class="btn">Submit</button>
+        </form>
+
+        {% if feedback %}
+            <div class="feedback">{{ feedback }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Confetti / Sparkles -->
+    <div class="confetti" id="confetti"></div>
+    <div class="sparkle-container" id="sparkleContainer"></div>
+
+<script>
+// Generate stars
+const starContainer = document.getElementById("starContainer");
+for(let i=0;i<50;i++){
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.top = Math.random()*80 + "%";
+    star.style.left = Math.random()*100 + "%";
+    star.style.animationDuration = (1+Math.random()*2) + "s";
+    starContainer.appendChild(star);
+}
+
+window.onload = () => {
+    const treasure = document.getElementById("treasureIcon");
+    const progressBar = document.getElementById("progressBar");
+    const progress = {{ progress }};
+    const feedback = "{{ feedback }}";
+
+    // Update progress
+    progressBar.style.width = progress + "%";
+    progressBar.innerHTML = Math.floor(progress) + "%";
+    treasure.style.left = `calc(${progress}% - 25px)`;
+
+    treasure.classList.add("glow");
+    if(feedback.includes("Correct")){
+        treasure.classList.remove("wrong");
+        treasure.classList.add("correct");
+        setTimeout(()=>treasure.classList.remove("correct"), 600);
+    }
+    else if(feedback.includes("Wrong")){
+        treasure.classList.remove("correct");
+        treasure.classList.add("wrong");
+        setTimeout(()=>treasure.classList.remove("wrong"), 500);
+    }
+
+    // Sparkles
+    const sparkleContainer = document.getElementById("sparkleContainer");
+    for(let i=0;i<15;i++){
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.top = treasure.offsetTop + Math.random()*50 + "px";
+        sparkle.style.left = treasure.offsetLeft + Math.random()*50 + "px";
+        sparkleContainer.appendChild(sparkle);
+        setTimeout(()=>sparkle.remove(),2000);
+    }
+
+    // Confetti if treasure complete
+    if(progress >= 100){
+        const confettiContainer = document.getElementById('confetti');
+        for(let i=0;i<50;i++){
+            const confetti = document.createElement('div');
+            confetti.style.left = Math.random()*window.innerWidth + 'px';
+            confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+            confettiContainer.appendChild(confetti);
+            setTimeout(()=>confetti.remove(),3000);
+        }
+    }
+}
+</script>
+</body>
+</html>

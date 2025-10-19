@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Treasure Hunt Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Welcome to Treasure Hunt Adventure 🏴‍☠️</h1>
+
+    <!-- Clouds -->
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+
+    <!-- Star background -->
+    <div id="starContainer"></div>
+
+    <div class="question-box">
+        <form method="POST">
+            <h2>Enter your age to start the game:</h2>
+            <input type="number" name="age" required min="1" placeholder="Your Age">
+            <br>
+            <button type="submit" class="btn">Start Game</button>
+        </form>
+    </div>
+
+<script>
+// Generate random stars
+const starContainer = document.getElementById("starContainer");
+for(let i=0;i<50;i++){
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.top = Math.random()*80 + "%";
+    star.style.left = Math.random()*100 + "%";
+    star.style.animationDuration = (1+Math.random()*2) + "s";
+    starContainer.appendChild(star);
+}
+</script>
+</body>
+</html>
